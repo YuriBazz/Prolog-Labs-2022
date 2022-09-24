@@ -104,13 +104,13 @@ remove(T, N, X) :-
         ;
         N > H, !, remove(R, N, X2), X = tr(H, L, X2)
         ;
-        N =:= H, L \== nil, R \== nil, !, minTree(R, N1), remove(R, N1, R1), X = tr(N1, L, R1)
+        L \== nil, R \== nil, !, minTree(R, N1), remove(R, N1, R1), X = tr(N1, L, R1)
         ;
-        N =:= H, R = nil, L \== nil, X = L
+        R = nil, L \== nil, X = L
         ;
-        N =:= H, L = nil, R \== nil, X = R
+        L = nil, R \== nil, X = R
         ;
-        N =:= H, L = nil, R = nil, X = nil
+        L = nil, R = nil, X = nil
     ).
 minTree(T, N) :-
     T = tr(H, L, _),
