@@ -34,18 +34,18 @@ qntDigit(A, B, K, N) :-
 %Задание 3
 
 sumCubes(A, B) :-
-    var(A), step_for_vars(A, B, 0)
+    number(B), !, step_for_numbers(X, B, 0, 0), A = X
     ;
-    number(A), step_for_numbers(A, B, 0, 0).
+    step_for_vars(A, B, 0).
 step_for_vars(A, B, C) :- 
-    A is C, step_for_numbers(A, B, 0, 0)
-    ;
-    C1 is C + 1, step_for_vars(A, B, C1).
+   step_for_numbers(X, C, 0, 0), B = C, A = X
+   ;
+   C1 is C + 1, step_for_vars(A, B, C1).
 
-step_for_numbers(N, R, A, B) :-
-    R = B, N is A, !
+step_for_numbers(A, B, C, D) :-
+    B > D, C1 is C + 1, D1 is D + C1^3, step_for_numbers(A, B, C1, D1)
     ;
-    N > A, A1 is A + 1, A2 is A1 ^ 3, B1 is B + A2, step_for_numbers(N, R, A1, B1).
+    B =:= D, A is C.
 
 %Задание 4
 
