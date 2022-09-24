@@ -104,7 +104,7 @@ remove(T, N, X) :-
         ;
         N > H, !, remove(R, N, X2), X = tr(H, L, X2)
         ;
-        L \== nil, R \== nil, !, minTree(R, N1), remove(R, N1, R1), X = tr(N1, L, R1)
+        L \== nil, R \== nil, minTree(R, N1), remove(R, N1, R1), X = tr(N1, L, R1)
         ;
         R = nil, L \== nil, X = L
         ;
