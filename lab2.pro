@@ -2,11 +2,8 @@
 
 toSquares(_, 0, 0).
 toSquares(A, B, C) :-
-    A =< B,
-    A1 is A mod B, B1 is B - A1, toSquares(B1, A1, C1), C is C1 + 1
-    ;
-    A > B,
-    toSquares(B, A, C).
+    B > 0, 
+    A1 is A mod B, B1 is A, toSquares(B1, A1, C1), C2 is A div B, C is C1 + C2.
 
 %Задание 2
 
@@ -48,7 +45,8 @@ step_for_numbers(A, B, C, D) :-
     B =:= D, A is C.
 
 %Задание 4
-
+insert(nil, N, T) :-
+    T = tr(N, nil,nil), !.
 insert(B, N, T) :-
     B = tr(A,nil,nil),
     (
@@ -56,12 +54,12 @@ insert(B, N, T) :-
     ;
     N < A, T = tr(A,tr(N,nil,nil),nil)
     ;
-    N =:= A, T = tr(A,nil,nil)
+    N =:= A, !, T = tr(A,nil,nil)
     ).
 insert(A, N, T) :-
     A = tr(B, C, D),
     (
-        B =:= N, T = A
+        B =:= N, T = A, !
         ;
         B < N, insert(D, N, T1), T = tr(B, C, T1)
         ;
@@ -94,10 +92,10 @@ check(nil, _, _).
 check(T, Min, Max) :- 
     T = tr(H, L, R), H @> Min, H @< Max, check(L, Min, H), check(R, H, Max).
 
+
 remove(T, N, X) :-
-    \+ contains(T, N), X = T.
-remove(nil, _, nil).
-remove(T, N, X) :-
+    T = nil, !, X = nil
+    ;
     T = tr(H, L, R),
     (
         N < H, !, remove(L, N, X1), X = tr(H, X1, R)
