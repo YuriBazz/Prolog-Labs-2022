@@ -1,9 +1,10 @@
+
 % Задание 1
 
 toSquares(_, 0, 0).
 toSquares(A, B, C) :-
     B > 0, 
-    A1 is A mod B, B1 is A, toSquares(B1, A1, C1), C2 is A div B, C is C1 + C2.
+    A1 is A mod B, B1 is B, toSquares(B1, A1, C1), C2 is A div B, C is C1 + C2.
 
 %Задание 2
 
@@ -23,7 +24,7 @@ qntDigit(A, B, K, N) :-
     ;
     A1 is A + 1,
     (
-        kInNumber(A, K), !, qntDigit(A1, B, K, N1), N is N1 + 1
+        A2 is abs(A), kInNumber(A2, K), !, qntDigit(A1, B, K, N1), N is N1 + 1
         ;
         qntDigit(A1, B, K, N)
     ).
@@ -50,16 +51,16 @@ insert(nil, N, T) :-
 insert(B, N, T) :-
     B = tr(A,nil,nil),
     (
-    N > A, T = tr(A,nil,tr(N,nil,nil))
+    N > A, !, T = tr(A,nil,tr(N,nil,nil))
     ;
-    N < A, T = tr(A,tr(N,nil,nil),nil)
+    N < A, !, T = tr(A,tr(N,nil,nil),nil)
     ;
     N =:= A, !, T = tr(A,nil,nil)
     ).
 insert(A, N, T) :-
     A = tr(B, C, D),
     (
-        B =:= N, T = A, !
+        B =:= N, !, T = A
         ;
         B < N, insert(D, N, T1), T = tr(B, C, T1)
         ;
