@@ -16,7 +16,7 @@ helper2(N, K) :-
     (
         K =:= N2, !
         ; 
-        N1 is N div 10, helper(N1, K)
+        N1 is N div 10, helper2(N1, K)
     ).
 qntDigit(A, B, K, N) :-
     A > B, !, N = 0
