@@ -21,7 +21,6 @@ helper_reg(L, X) :-
 
 % Задача 2
 
-prime(1).
 prime(X) :- helper3(X,2).
 helper3(N, D) :- (N =:= D) ; (N > D, N mod D =\= 0, D1 is D + 1, helper3(N, D1)).
 deleteNonPrime([], []).
@@ -52,36 +51,47 @@ mySublist(L1, L2) :-
 % Задача 4
 
 myConfluens(L1, L2, X) :-
-    myReverse(L1, Y1), myReverse(L2, Y2), helper4(Y1, Y2, [], X).
-helper4(L1, L2, X1, X) :-
-    L1 = [], L2 = [], !, X = X1
+    L1 = [], L2 = [], !, X = []
     ;
-    L1 = [], L2 = [H2|T2], !, helper4(L1, T2, [H2|X1], X)
+    L1 = [H1|T1], L2 = [], !, myConfluens(T1, L2, X1), X = [H1|X1]
     ;
-    L1 = [H1|T1], L2 = [], !, helper4(T1, L2, [H1|X1], X)
+    L1 = [], L2 = [H2|T2], !, myConfluens(L1, T2, X1), X= [H2|X1]
     ;
-    L1 = [H1|T1], L2 = [H2|T2], !, (H2 > H1 -> helper4(L1, T2, [H2|X1], X); helper4(T1, L2, [H1|X1], X)).
+    L1 = [H1|T1], L2 = [H2|T2], !,
+    (
+        H1 < H2, !, myConfluens(T1, L2, X1), X = [H1|X1]
+        ;
+        myConfluens(L1, T2, X1), X = [H2|X1]
+    ).
 
 % Задача 5
 
 numlst(N, Lst) :-
-    number(N), var(Lst),
+    number(N), (var(Lst); list(Lst)),
     (   
-        N = 0, Lst = [0], !
+        Lst = [0], N = 0, !
         ;
-        helper5(N, Lst, [])
+        helper5(N, Lst), !
     ).
 numlst(N, Lst) :-
-    var(N), var(Lst),
-    numlst1(N, Lst, 0).
+    var(N),
+    (
+        list(Lst), !, numlst1(N, Lst, 0)
+        ;
+        var(Lst), !, numlst2(N, Lst, 0)
+    ).
+helper5(N, Lst) :-
+    N div 10 =:= 0, !, Lst = [N]
+    ;
+    N1 is N mod 10, N2 is N div 10, helper5(N2, Lst1), append(Lst1, [N1], Lst).
 numlst1(N, Lst, X) :-
-    N = X, numlst(N, Lst)
+    numlst(X, Lst), N = X, !
     ;
     X1 is X + 1, numlst1(N, Lst, X1).
-helper5(N, Lst, X) :-
-    N = 0, !, Lst = X
+numlst2(N, Lst, X) :-
+    numlst(X, Lst), N = X
     ;
-    N1 is N mod 10, N2 is N div 10, X1 = [N1|X], helper5(N2, Lst, X1).
+    X1 is X + 1, numlst2(N, Lst, X1).
 
 % Задача 6
 
