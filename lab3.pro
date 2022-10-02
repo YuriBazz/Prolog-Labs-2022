@@ -1,3 +1,4 @@
+
 % Задача 1
 
 myReverse(L, X) :- helper1(L, [], X).
@@ -21,11 +22,12 @@ helper_reg(L, X) :-
 
 % Задача 2
 
-prime(X) :- helper3(X,2).
+primeAnd1(1). %Честно не могу понять, что вам изначально не понравилось в prime(1). Оно в первом скинутом файле тут и было, как понимание того, что 1 - не составное число
+primeAnd1(X) :- helper3(X,2).
 helper3(N, D) :- (N =:= D) ; (N > D, N mod D =\= 0, D1 is D + 1, helper3(N, D1)).
 deleteNonPrime([], []).
 deleteNonPrime([H|T], X) :-
-    prime(H), !, deleteNonPrime(T, X1), X = [H|X1]
+    primeAnd1(H), !, deleteNonPrime(T, X1), X = [H|X1]
     ;
     deleteNonPrime(T, X1), X = X1.
 
@@ -44,7 +46,7 @@ mySublist(L1, L2) :-
         L = [_|L1], mySublist(L, L2)
     ).
 mySublist(L1, L2) :-
-    myPrefix(L1, L2)
+    myPrefix(L1, L2), !
     ;
     L2 = [_|T2], mySublist(L1, T2).
 
@@ -66,32 +68,23 @@ myConfluens(L1, L2, X) :-
 
 % Задача 5
 
-numlst(N, Lst) :-
-    number(N), (var(Lst); list(Lst)),
-    (   
-        Lst = [0], N = 0, !
-        ;
-        helper5(N, Lst), !
-    ).
-numlst(N, Lst) :-
-    var(N),
-    (
-        list(Lst), !, numlst1(N, Lst, 0)
-        ;
-        var(Lst), !, numlst2(N, Lst, 0)
-    ).
-helper5(N, Lst) :-
-    N div 10 =:= 0, !, Lst = [N]
+numlst(N, Lst):-
+	var(N), list(Lst), iter(Lst, 0, X), X = N
     ;
-    N1 is N mod 10, N2 is N div 10, helper5(N2, Lst1), append(Lst1, [N1], Lst).
-numlst1(N, Lst, X) :-
-    numlst(X, Lst), N = X, !
+	number(N), \+ (N = 0), helper5(N, [], Lst)
     ;
-    X1 is X + 1, numlst1(N, Lst, X1).
-numlst2(N, Lst, X) :-
-    numlst(X, Lst), N = X
+	var(N), var(Lst), f(1, N, Lst).
+helper5(N, Lst, Lst1):-
+	N =\= 0, N1 is N div 10, N2 is N mod 10, helper5(N1, [N2|Lst], Lst1).
+helper5(0, Lst, Lst).
+f(N, M, Lst):-
+	M is N, helper5(N, [], Lst)
     ;
-    X1 is X + 1, numlst2(N, Lst, X1).
+	N1 is N + 1, f(N1, M, Lst).
+iter([A|B], C, D):-
+	B = [], !, D is C * 10 + A
+    ;
+	C1 is C * 10 + A, iter(B, C1, D).
 
 % Задача 6
 
