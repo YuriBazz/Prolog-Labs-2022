@@ -71,7 +71,7 @@ myConfluens(L1, L2, X) :-
 numlst(N, Lst):-
 	var(N), list(Lst), iter(Lst, 0, X), X = N
     ;
-	number(N), \+ (N = 0), helper5(N, [], Lst)
+	number(N), !, (N =:= 0 -> Lst = [0]; helper5(N, [], Lst))
     ;
 	var(N), var(Lst), f(1, N, Lst).
 helper5(N, Lst, Lst1):-
