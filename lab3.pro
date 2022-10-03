@@ -103,31 +103,22 @@ divide([H|T], N, GLst, [H|SLst]):-
 % Задача 7 НЕ РАБОТАЕТ!!!!!!
 
 p(Lst, X) :-
-    myReverse(Lst, Y),
-    helper7(Y, [], [], X).
+    helper7(Lst, [], [], X).
 len([], 0).
 len([_|T], N) :- len(T, N1), N is N1 + 1.
-helper7(Lst, LstCur, LstMax, X) :-
-    Lst = [], !, len(LstCur, N1), len(LstMax, N2),
-    (
-        N1 > N2, !, X = LstCur
+helper7(Lst, SubLstCur, SubLstMax, Res) :-
+    ( 
+        Lst = [] -> (length(SubLstCur, Cur), length(SubLstMax, Max), Cur > Max -> reverse(SubLstCur, Res) ; reverse(SubLstMax, Res))
         ;
-        X = LstMax
-    )
-    ;
-    Lst = [H|T],
-    (
-        LstCur = [], !, helper7(T, [H], LstMax, X)
-        ;
-        LstCur = [H1|_], !,
+        Lst = [H|T], 
         (
-            H > H1, append(LstCur, [H], Y), helper7(T, Y, LstMax, X)
+            (SubLstCur = []; SubLstCur = [S|_], H > S) -> helper7(T, [H|SubLstCur], SubLstMax, Res)
             ;
-            len(LstCur, N1), len(LstMax, N2),
+            length(SubLstMax, Max), length(SubLstCur, Cur),
             (
-                N1 > N2, !, helper7(T, [], LstCur, X)
+                Cur > Max -> helper7(Lst, [], SubLstCur, Res)
                 ;
-                helper7(T, [], LstMax, X)
+                helper7(Lst, [], SubLstMax, Res)    
             )
         )
     ).
