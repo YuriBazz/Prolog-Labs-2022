@@ -104,8 +104,6 @@ divide([H|T], N, GLst, [H|SLst]):-
 
 p(Lst, X) :-
     helper7(Lst, [], [], X).
-len([], 0).
-len([_|T], N) :- len(T, N1), N is N1 + 1.
 helper7(Lst, SubLstCur, SubLstMax, Res) :-
     ( 
         Lst = [] -> (length(SubLstCur, Cur), length(SubLstMax, Max), Cur > Max -> reverse(SubLstCur, Res) ; reverse(SubLstMax, Res))
