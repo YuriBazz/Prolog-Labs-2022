@@ -22,7 +22,7 @@ helper_reg(L, X) :-
 
 % Задача 2
 
-primeAnd1(1). %Честно не могу понять, что вам изначально не понравилось в prime(1). Оно в первом скинутом файле тут и было, как понимание того, что 1 - не составное число
+primeAnd1(1). 
 primeAnd1(X) :- helper3(X,2).
 helper3(N, D) :- (N =:= D) ; (N > D, N mod D =\= 0, D1 is D + 1, helper3(N, D1)).
 deleteNonPrime([], []).
@@ -100,7 +100,7 @@ divide([H|T], N, [H|GLst], SLst):-
 divide([H|T], N, GLst, [H|SLst]):-
   divide(T, N, GLst, SLst).
 
-% Задача 7 НЕ РАБОТАЕТ!!!!!!
+% Задача 7
 
 p(Lst, X) :-
     helper7(Lst, [], [], X).
